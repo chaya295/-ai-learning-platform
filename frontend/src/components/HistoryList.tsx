@@ -16,22 +16,20 @@ export const HistoryList: React.FC<Props> = ({ userId, refresh }) => {
   }, [userId, refresh]);
 
   return (
-    <Box bg="white" p={8} borderRadius="lg" boxShadow="lg">
-      <Heading size="md" mb={6}>Learning History</Heading>
-      <VStack spacing={4} align="stretch">
+    <Box bg="white" p={6} borderRadius="lg" boxShadow="lg" maxH="calc(100vh - 150px)" overflowY="auto">
+      <Heading size="md" mb={4} position="sticky" top="0" bg="white" pb={2} zIndex={1}>שאלות קודמות</Heading>
+      <VStack spacing={3} align="stretch">
         {history.length === 0 ? (
-          <Text color="gray.500">No lessons yet. Generate your first lesson above!</Text>
+          <Text color="gray.500" fontSize="sm">אין שאלות עדיין</Text>
         ) : (
           history.map((item) => (
-            <Box key={item.id} p={4} borderWidth="1px" borderRadius="md" bg="gray.50">
-              <Badge colorScheme="blue" mb={2}>
-                {item.category?.name} - {item.subCategory?.name}
+            <Box key={item.id} p={3} borderWidth="1px" borderRadius="md" bg="gray.50" _hover={{ bg: 'blue.50', cursor: 'pointer' }}>
+              <Badge colorScheme="blue" fontSize="xs" mb={1}>
+                {item.category?.name}
               </Badge>
-              <Text fontWeight="bold" mb={2}>{item.prompt}</Text>
-              <Divider my={2} />
-              <Text fontSize="sm" color="gray.700">{item.response}</Text>
-              <Text fontSize="xs" color="gray.400" mt={2}>
-                {new Date(item.createdAt).toLocaleString()}
+              <Text fontWeight="bold" fontSize="sm" noOfLines={2} mb={1}>{item.prompt}</Text>
+              <Text fontSize="xs" color="gray.400">
+                {new Date(item.createdAt).toLocaleDateString('he-IL')}
               </Text>
             </Box>
           ))

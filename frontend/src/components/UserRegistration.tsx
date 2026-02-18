@@ -9,6 +9,7 @@ interface Props {
 export const UserRegistration: React.FC<Props> = ({ onUserCreated }) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const toast = useToast();
 
@@ -17,7 +18,7 @@ export const UserRegistration: React.FC<Props> = ({ onUserCreated }) => {
     setLoading(true);
 
     try {
-      const response = await usersApi.create({ name, phone });
+      const response = await usersApi.create({ name, phone, password });
       toast({ title: 'Registered successfully!', status: 'success', duration: 3000 });
       onUserCreated(response.data.id);
     } catch (error: any) {
@@ -48,6 +49,16 @@ export const UserRegistration: React.FC<Props> = ({ onUserCreated }) => {
               onChange={(e) => setPhone(e.target.value)}
               placeholder="10 digits"
               maxLength={10}
+            />
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel>Password</FormLabel>
+            <Input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Min 6 characters"
+              minLength={6}
             />
           </FormControl>
           <Button type="submit" colorScheme="blue" width="full" isLoading={loading}>

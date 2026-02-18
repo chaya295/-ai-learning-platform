@@ -101,9 +101,10 @@ curl -X POST http://localhost:3000/categories/seed
 ### Backend (.env)
 
 ```
-DATABASE_URL="postgresql://user:password@localhost:5432/ai_learning_db"
+DATABASE_URL="postgresql://user:password@localhost:5433/ai_learning_db"
 OPENAI_API_KEY="your-openai-api-key"
 PORT=3000
+JWT_SECRET="your-super-secret-jwt-key-change-in-production"
 ```
 
 ### Frontend (.env)
@@ -117,22 +118,29 @@ REACT_APP_API_URL=http://localhost:3000
 ### Interactive API Documentation
 **Swagger UI available at:** `http://localhost:3000/api-docs`
 
+### Authentication
+- `POST /auth/login` - Login with phone and password (returns JWT token)
+
 ### Users
-- `POST /users` - Create new user
-- `GET /users` - Get all users
-- `GET /users/:id` - Get user by ID
+- `POST /users` - Register new user (name, phone, password)
+- `GET /users` - Get all users (requires ADMIN role)
+- `GET /users/:id` - Get user by ID (requires authentication)
+- `PATCH /users/:id/role` - Update user role (requires ADMIN role)
 
 ### Categories
 - `GET /categories` - Get all categories with subcategories
 - `POST /categories/seed` - Seed initial categories
 
 ### Prompts
-- `POST /prompts` - Create new prompt and generate lesson
-- `GET /prompts/user/:userId` - Get user's learning history
+- `POST /prompts` - Create new prompt and generate lesson (requires authentication)
+- `GET /prompts/user/:userId` - Get user's learning history (requires authentication)
+- `GET /prompts` - Get all prompts (requires ADMIN role)
 
 ## 🎯 Features
 
-- ✅ User registration with name and phone
+- ✅ User registration with name, phone, and password
+- ✅ **JWT-based authentication** with bcrypt password hashing
+- ✅ Role-based access control (USER/ADMIN)
 - ✅ Category and subcategory selection
 - ✅ AI-powered lesson generation using OpenAI
 - ✅ Learning history tracking
@@ -171,26 +179,30 @@ npm run test
 
 ## 💡 Assumptions
 
-1. Phone numbers are 10 digits
-2. OpenAI API is used for lesson generation (can be mocked)
-3. PostgreSQL is the primary database
-4. No authentication required for MVP (can be added)
-5. Admin dashboard is publicly accessible (should add auth in production)
+1. Phone numbers are unique identifiers (10 digits)
+2. OpenAI API is used for lesson generation (with fallback mock)
+3. PostgreSQL is the primary database (port 5433)
+4. JWT tokens are valid for 7 days
+5. Passwords are hashed with bcrypt (10 rounds)
+6. Default user role is USER, can be upgraded to ADMIN
+7. Admin features require ADMIN role
 
 ## 🎨 Example Use Case
 
 1. **Israel** visits the platform
-2. He registers with his name and phone number
-3. He selects **Science** → **Space**
-4. He enters: "Teach me about black holes"
-5. The AI generates a comprehensive lesson
-6. He can view all his past lessons in the history section
-7. Admin can see all users and their learning activity
+2. He registers with his name, phone number, and password
+3. He logs in with his phone and password
+4. He selects **Science** → **Space**
+5. He enters: "Teach me about black holes"
+6. The AI generates a comprehensive lesson
+7. He can view all his past lessons in the "My History" section
+8. He can logout securely
+9. Admin users can access the admin dashboard to see all users and their learning activity
 
 ## 🔮 Future Enhancements
 
-- JWT authentication
 - User profiles with avatars
+- Password reset functionality
 - Lesson bookmarking and favorites
 - Search and filter in history
 - Export lessons as PDF
