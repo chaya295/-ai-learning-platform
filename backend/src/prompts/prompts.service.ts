@@ -42,6 +42,17 @@ export class PromptsService {
     });
   }
 
+  async findAll() {
+    return this.prisma.prompt.findMany({
+      include: {
+        category: true,
+        subCategory: true,
+        user: { select: { id: true, name: true, phone: true } },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
   async findByUser(userId: number) {
     return this.prisma.prompt.findMany({
       where: { userId },

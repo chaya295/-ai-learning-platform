@@ -10,13 +10,5 @@ export class CategoriesController {
     return this.categoriesService.findAll();
   }
 
-  @Post('seed')
-  seed() {
-    return this.categoriesService.seedCategories();
-  }
-
-  @Get('seed')
-  seedGet() {
-    return this.categoriesService.seedCategories();
-  }
+  
 }
