@@ -1,8 +1,8 @@
-import axios from 'axios';
+import api from './client';
 import MockAdapter from 'axios-mock-adapter';
 import { authApi, usersApi, categoriesApi, promptsApi } from './client';
 
-const mock = new MockAdapter(axios);
+const mock = new MockAdapter(api);
 
 describe('API Client', () => {
   beforeEach(() => {
