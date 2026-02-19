@@ -16,7 +16,7 @@
    - **Name:** `ai-learning-backend`
    - **Root Directory:** `backend`
    - **Environment:** `Node`
-   - **Build Command:** `npm install && npx prisma generate && npx prisma migrate deploy`
+   - **Build Command:** `npm install && npx prisma generate && npx prisma migrate deploy && npm run build`
    - **Start Command:** `npm run start:prod`
 
 ### שלב 3: Environment Variables
