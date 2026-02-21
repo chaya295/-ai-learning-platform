@@ -14,8 +14,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
+    if (savedUser && savedUser !== 'undefined') {
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch (error) {
+        localStorage.removeItem('user');
+      }
     }
   }, []);
 
