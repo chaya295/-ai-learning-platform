@@ -22,3 +22,5 @@ describe('config', () => {
     expect(API_URL).toBe('http://localhost:3000');
   });
 });
+
+export {};
