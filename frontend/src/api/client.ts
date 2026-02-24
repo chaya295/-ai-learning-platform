@@ -1,14 +1,16 @@
 import axios from 'axios';
-import { API_URL } from '../config';
+
+// Direct hardcoded URL
+const BACKEND_URL = 'https://ai-learning-backend-707v.onrender.com';
 
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: BACKEND_URL,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-console.log('⚙️ Axios baseURL:', api.defaults.baseURL);
+console.log('⚙️ Axios baseURL:', BACKEND_URL);
 
 // Add JWT token to requests
 api.interceptors.request.use((config) => {
