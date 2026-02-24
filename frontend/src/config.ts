@@ -1,8 +1,4 @@
-const isDevelopment = window.location.hostname === 'localhost';
-const productionUrl = 'https://ai-learning-backend-707v.onrender.com';
-const developmentUrl = 'http://localhost:3000';
+// Hardcoded for production - window.location doesn't work in build
+export const API_URL = 'https://ai-learning-backend-707v.onrender.com';
 
-export const API_URL = isDevelopment ? developmentUrl : productionUrl;
-
-console.log('🌐 Environment:', isDevelopment ? 'Development' : 'Production');
 console.log('🔗 API URL:', API_URL);
