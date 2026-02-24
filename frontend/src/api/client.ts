@@ -8,8 +8,11 @@ const api = axios.create({
   },
 });
 
+console.log('⚙️ Axios baseURL:', api.defaults.baseURL);
+
 // Add JWT token to requests
 api.interceptors.request.use((config) => {
+  console.log('📤 Request:', config.method?.toUpperCase(), config.url, 'baseURL:', config.baseURL);
   const token = localStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
