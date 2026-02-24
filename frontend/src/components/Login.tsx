@@ -3,7 +3,7 @@ import { Box, Button, FormControl, FormLabel, Input, VStack, Heading, Text } fro
 import { authApi } from '../api/client';
 
 interface LoginProps {
-  onLoginSuccess: (user: any, token: string) => void;
+  onLoginSuccess: (user: any) => void;
 }
 
 export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
@@ -24,7 +24,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
       
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(userData));
-      onLoginSuccess(userData, token);
+      onLoginSuccess(userData);
     } catch (err: any) {
       setError(err.response?.data?.message || 'Login failed');
     } finally {
