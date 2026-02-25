@@ -14,7 +14,7 @@ console.log('✅ Axios configured with baseURL:', api.defaults.baseURL);
 
 // Add JWT token to requests
 api.interceptors.request.use((config) => {
-  console.log('📤 Request to:', config.baseURL + config.url);
+  console.log('📤 Request to:', (config.baseURL || '') + (config.url || ''));
   const token = localStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -25,7 +25,7 @@ api.interceptors.request.use((config) => {
 // Handle 401/403 errors
 api.interceptors.response.use(
   (response) => {
-    console.log('✅ Response from:', response.config.baseURL + response.config.url);
+    console.log('✅ Response from:', (response.config.baseURL || '') + (response.config.url || ''));
     return response;
   },
   (error) => {
