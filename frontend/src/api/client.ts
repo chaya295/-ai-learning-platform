@@ -1,20 +1,18 @@
 import axios from 'axios';
 
-// Direct hardcoded URL
-const BACKEND_URL = 'https://ai-learning-backend-707v.onrender.com';
-
 const api = axios.create({
-  baseURL: BACKEND_URL,
+  baseURL: 'https://ai-learning-backend-707v.onrender.com',
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 10000,
 });
 
-console.log('⚙️ Axios baseURL:', BACKEND_URL);
+console.log('✅ Axios baseURL:', api.defaults.baseURL);
 
 // Add JWT token to requests
 api.interceptors.request.use((config) => {
-  console.log('📤 Request:', config.method?.toUpperCase(), config.url, 'baseURL:', config.baseURL);
+  console.log('📤 Request to:', config.url);
   const token = localStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -24,8 +22,12 @@ api.interceptors.request.use((config) => {
 
 // Handle 401/403 errors
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log('✅ Response from:', response.config.url);
+    return response;
+  },
   (error) => {
+    console.error('❌ Error from:', error.config?.url);
     if (error.response?.status === 401 || error.response?.status === 403) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');

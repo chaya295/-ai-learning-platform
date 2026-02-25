@@ -9,10 +9,21 @@ dotenv.config();
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
+  // CORS Configuration for production
   app.enableCors({
-    origin: true,
+    origin: [
+      'http://localhost:3001',
+      'http://localhost:3000', 
+      'https://ai-learning-frontend-qsz7.onrender.com',
+      /\.onrender\.com$/  // Allow all Render subdomains
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
+    preflightContinue: false,
+    optionsSuccessStatus: 204
   });
+  
   app.useGlobalPipes(new ValidationPipe());
   
   // Swagger Configuration
