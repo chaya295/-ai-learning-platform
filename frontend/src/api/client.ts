@@ -2,8 +2,10 @@ import axios from 'axios';
 
 // For this project we hard-code the backend URL so that
 // the frontend always calls the correct server in production.
+const BACKEND_URL = 'https://ai-learning-backend-707v.onrender.com';
+
 const api = axios.create({
-  baseURL: 'https://ai-learning-backend-707v.onrender.com',
+  baseURL: BACKEND_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -40,7 +42,9 @@ api.interceptors.response.use(
 );
 
 export const authApi = {
-  login: (phone: string, password: string) => api.post('/auth/login', { phone, password }),
+  // Use absolute URL for login to avoid any baseURL/env issues in production.
+  login: (phone: string, password: string) =>
+    axios.post(`${BACKEND_URL}/auth/login`, { phone, password }),
 };
 
 export const usersApi = {
