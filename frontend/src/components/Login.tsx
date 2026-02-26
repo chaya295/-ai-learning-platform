@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Box, Button, FormControl, FormLabel, Input, VStack, Heading, Text } from '@chakra-ui/react';
-import { authApi } from '../api/client';
+import axios from 'axios';
+
+const BACKEND_URL = 'https://ai-learning-backend-707v.onrender.com';
 
 interface LoginProps {
   onLoginSuccess: (user: any) => void;
@@ -18,7 +20,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
     setError('');
     
     try {
-      const response = await authApi.login(phone, password);
+      const response = await axios.post(`${BACKEND_URL}/auth/login`, { phone, password });
       const userData = response.data.user;
       const token = response.data.access_token;
       
