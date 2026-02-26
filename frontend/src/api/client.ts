@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { API_URL } from '../config';
 
-// Production backend URL
+// For this project we hard-code the backend URL so that
+// the frontend always calls the correct server in production.
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: 'https://ai-learning-backend-707v.onrender.com',
   headers: {
     'Content-Type': 'application/json',
   },
