@@ -36,7 +36,9 @@ api.interceptors.response.use(
 );
 
 export const authApi = {
-  login: (phone: string, password: string) => api.post('/auth/login', { phone, password }),
+  // Use absolute URL so login always goes directly to the backend.
+  login: (phone: string, password: string) =>
+    axios.post(`${BACKEND_URL}/auth/login`, { phone, password }),
 };
 
 export const usersApi = {
