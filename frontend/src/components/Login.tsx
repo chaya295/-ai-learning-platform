@@ -34,7 +34,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
 
   return (
     <Box bg="white" p={8} borderRadius="lg" boxShadow="lg" maxW="md" mx="auto">
-      <Heading size="md" mb={6} textAlign="center">התחברות</Heading>
+      <Heading size="md" mb={6} textAlign="center">התחברות (בדיקה 123)</Heading>
       <form onSubmit={handleLogin}>
         <VStack spacing={4}>
           <FormControl isRequired>
