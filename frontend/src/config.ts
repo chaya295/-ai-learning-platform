@@ -1,4 +1,5 @@
-// Hardcoded for production - window.location doesn't work in build
-export const API_URL = 'https://ai-learning-backend-707v.onrender.com';
+// API URL configuration
+export const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
 
 console.log('🔗 API URL:', API_URL);
+console.log('🌍 Environment:', process.env.NODE_ENV);

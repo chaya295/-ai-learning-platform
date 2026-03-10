@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://ai-learning-backend-707v.onrender.com',
+  baseURL: 'http://localhost:3000',
+  // 'https://ai-learning-backend-707v.onrender.com',
   headers: {
     'Content-Type': 'application/json',
   },

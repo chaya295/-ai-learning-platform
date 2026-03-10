@@ -14,7 +14,7 @@ async function bootstrap() {
     origin: [
       'http://localhost:3001',
       'http://localhost:3000', 
-      'https://ai-learning-frontend-qsz7.onrender.com',
+      'https://ai-learning-platform-xmlw.onrender.com',
       /\.onrender\.com$/  // Allow all Render subdomains
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],

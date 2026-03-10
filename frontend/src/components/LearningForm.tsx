@@ -30,8 +30,10 @@ export const LearningForm: React.FC<Props> = ({ userId, onLessonCreated }) => {
       toast({ title: 'Lesson generated!', status: 'success', duration: 3000 });
       setPrompt('');
       onLessonCreated();
-    } catch (error) {
-      toast({ title: 'Error generating lesson', status: 'error', duration: 3000 });
+    } catch (error: any) {
+      const errorMsg = error.response?.data?.message || error.message || 'Error generating lesson';
+      toast({ title: errorMsg, status: 'error', duration: 5000 });
+      console.error('Full error:', error);
     } finally {
       setLoading(false);
     }
