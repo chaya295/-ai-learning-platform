@@ -84,4 +84,18 @@ export class PromptsService {
       orderBy: { createdAt: 'desc' },
     });
   }
+
+  async remove(id: number) {
+    if (!id || id <= 0) {
+      throw new BadRequestException('Invalid prompt ID');
+    }
+
+    const prompt = await this.prisma.prompt.findUnique({ where: { id } });
+    if (!prompt) {
+      throw new NotFoundException(`Prompt with ID ${id} not found`);
+    }
+
+    await this.prisma.prompt.delete({ where: { id } });
+    return { message: 'Prompt deleted successfully' };
+  }
 }

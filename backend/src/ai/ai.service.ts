@@ -48,7 +48,7 @@ export class AiService {
 
     try {
       const completion = await this.openai.chat.completions.create({
-        model: 'gpt-4o-mini',
+        model: 'gpt-4o',
         messages: [
           {
             role: 'system',
@@ -59,7 +59,7 @@ export class AiService {
             content: prompt,
           },
         ],
-        max_tokens: 500,
+        max_tokens: 1000,
         temperature: 0.7,
       });
 

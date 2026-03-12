@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, FormControl, FormLabel, Input, VStack, Heading, Text } from '@chakra-ui/react';
+import { Box, Button, FormControl, FormLabel, Input, VStack, Heading, Text, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import { authApi } from '../api/client';
 
 interface LoginProps {
@@ -26,40 +26,64 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
       localStorage.setItem('user', JSON.stringify(userData));
       onLoginSuccess(userData);
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Login failed');
+      setError(err.response?.data?.message || 'Login failed. Please check your credentials.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Box bg="white" p={8} borderRadius="lg" boxShadow="lg" maxW="md" mx="auto">
-      <Heading size="md" mb={6} textAlign="center">התחברות</Heading>
+    <Box bg="white" p={8} borderRadius="xl" boxShadow="lg" maxW="md" w="full" border="1px" borderColor="gray.200">
+      <VStack spacing={2} mb={6} textAlign="center">
+        <Box fontSize="3xl">🎓</Box>
+        <Heading size="lg" color="gray.800">Welcome Back</Heading>
+        <Text color="gray.600" fontSize="sm">Sign in to continue learning</Text>
+      </VStack>
       <form onSubmit={handleLogin}>
         <VStack spacing={4}>
           <FormControl isRequired>
-            <FormLabel>מספר טלפון</FormLabel>
+            <FormLabel fontWeight="500" color="gray.700" fontSize="sm">Phone Number</FormLabel>
             <Input
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              placeholder="0501234567"
+              placeholder="Enter your phone number"
+              size="md"
               maxLength={10}
+              borderColor="gray.300"
+              _hover={{ borderColor: 'blue.400' }}
+              _focus={{ borderColor: 'blue.500', boxShadow: '0 0 0 1px #3182ce' }}
             />
           </FormControl>
           <FormControl isRequired>
-            <FormLabel>סיסמה</FormLabel>
+            <FormLabel fontWeight="500" color="gray.700" fontSize="sm">Password</FormLabel>
             <Input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="הזן סיסמה"
+              placeholder="Enter your password"
+              size="md"
               minLength={6}
+              borderColor="gray.300"
+              _hover={{ borderColor: 'blue.400' }}
+              _focus={{ borderColor: 'blue.500', boxShadow: '0 0 0 1px #3182ce' }}
             />
           </FormControl>
-          {error && <Text color="red.500" fontSize="sm">{error}</Text>}
-          <Button type="submit" colorScheme="blue" width="full" isLoading={loading}>
-            התחבר
+          {error && (
+            <Box bg="red.50" p={3} borderRadius="md" w="full" border="1px" borderColor="red.200">
+              <Text color="red.600" fontSize="sm">{error}</Text>
+            </Box>
+          )}
+          <Button 
+            type="submit" 
+            colorScheme="blue" 
+            size="md" 
+            width="full" 
+            isLoading={loading}
+            _hover={{ transform: 'translateY(-2px)', boxShadow: 'md' }}
+            transition="all 0.2s"
+          >
+            Sign In
           </Button>
         </VStack>
       </form>

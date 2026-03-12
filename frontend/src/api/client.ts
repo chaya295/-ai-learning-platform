@@ -51,6 +51,7 @@ export const promptsApi = {
     api.post('/prompts', data),
   getAll: () => api.get('/prompts'),
   getByUser: (userId: number) => api.get(`/prompts/user/${userId}`),
+  delete: (id: number) => api.delete(`/prompts/${id}`),
 };
 
 export default api;

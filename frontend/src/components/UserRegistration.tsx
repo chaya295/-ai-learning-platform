@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, FormControl, FormLabel, Input, VStack, useToast, Heading } from '@chakra-ui/react';
+import { Box, Button, FormControl, FormLabel, Input, VStack, useToast, Heading, Text } from '@chakra-ui/react';
 import { usersApi } from '../api/client';
 
 interface Props {
@@ -19,12 +19,17 @@ export const UserRegistration: React.FC<Props> = ({ onUserCreated }) => {
 
     try {
       const response = await usersApi.create({ name, phone, password });
-      toast({ title: 'Registered successfully!', status: 'success', duration: 3000 });
+      toast({ 
+        title: 'Registration successful!', 
+        description: 'You can now sign in with your credentials.',
+        status: 'success', 
+        duration: 3000 
+      });
       onUserCreated(response.data.id);
     } catch (error: any) {
       toast({
-        title: 'Error',
-        description: error.response?.data?.message || 'Failed to register',
+        title: 'Registration failed',
+        description: error.response?.data?.message || 'Please try again',
         status: 'error',
         duration: 3000,
       });
@@ -34,35 +39,63 @@ export const UserRegistration: React.FC<Props> = ({ onUserCreated }) => {
   };
 
   return (
-    <Box bg="white" p={8} borderRadius="lg" boxShadow="lg" maxW="md" mx="auto">
-      <Heading size="md" mb={6}>Register to Start Learning</Heading>
+    <Box bg="white" p={8} borderRadius="xl" boxShadow="lg" maxW="md" w="full" border="1px" borderColor="gray.200">
+      <VStack spacing={2} mb={6} textAlign="center">
+        <Box fontSize="3xl">🚀</Box>
+        <Heading size="lg" color="gray.800">Create Account</Heading>
+        <Text color="gray.600" fontSize="sm">Start your learning journey today</Text>
+      </VStack>
       <form onSubmit={handleSubmit}>
         <VStack spacing={4}>
           <FormControl isRequired>
-            <FormLabel>Name</FormLabel>
-            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter your name" />
+            <FormLabel fontWeight="500" color="gray.700" fontSize="sm">Full Name</FormLabel>
+            <Input 
+              value={name} 
+              onChange={(e) => setName(e.target.value)} 
+              placeholder="Enter your full name" 
+              size="md"
+              borderColor="gray.300"
+              _hover={{ borderColor: 'blue.400' }}
+              _focus={{ borderColor: 'blue.500', boxShadow: '0 0 0 1px #3182ce' }}
+            />
           </FormControl>
           <FormControl isRequired>
-            <FormLabel>Phone</FormLabel>
+            <FormLabel fontWeight="500" color="gray.700" fontSize="sm">Phone Number</FormLabel>
             <Input
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               placeholder="10 digits"
+              size="md"
               maxLength={10}
+              borderColor="gray.300"
+              _hover={{ borderColor: 'blue.400' }}
+              _focus={{ borderColor: 'blue.500', boxShadow: '0 0 0 1px #3182ce' }}
             />
           </FormControl>
           <FormControl isRequired>
-            <FormLabel>Password</FormLabel>
+            <FormLabel fontWeight="500" color="gray.700" fontSize="sm">Password</FormLabel>
             <Input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Min 6 characters"
+              placeholder="Minimum 6 characters"
+              size="md"
               minLength={6}
+              borderColor="gray.300"
+              _hover={{ borderColor: 'blue.400' }}
+              _focus={{ borderColor: 'blue.500', boxShadow: '0 0 0 1px #3182ce' }}
             />
           </FormControl>
-          <Button type="submit" colorScheme="blue" width="full" isLoading={loading}>
-            Register
+          <Button 
+            type="submit" 
+            colorScheme="blue" 
+            size="md" 
+            width="full" 
+            isLoading={loading}
+            _hover={{ transform: 'translateY(-2px)', boxShadow: 'md' }}
+            transition="all 0.2s"
+          >
+            Create Account
           </Button>
         </VStack>
       </form>

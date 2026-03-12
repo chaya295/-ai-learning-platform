@@ -1,9 +1,9 @@
 services:
   - type: web
-    name: ai-learning-platform
+    name: ai-learning-frontend
     env: static
     buildCommand: npm install && npm run build
     staticPublishPath: ./build
     envVars:
       - key: REACT_APP_API_URL
-        value: https://ai-learning-backend-707v.onrender.com
+        value: https://ai-learning-backend-39cv.onrender.com
