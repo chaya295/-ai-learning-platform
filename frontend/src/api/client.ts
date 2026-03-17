@@ -1,11 +1,13 @@
 import axios from 'axios';
-import { API_URL } from '../config';
+
+const BASE_URL = '/api';
 
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 60000,
 });
 
 // Add JWT token to requests
@@ -50,6 +52,7 @@ export const promptsApi = {
     api.post('/prompts', data),
   getAll: () => api.get('/prompts'),
   getByUser: (userId: number) => api.get(`/prompts/user/${userId}`),
+  delete: (id: number) => api.delete(`/prompts/${id}`),
 };
 
 export default api;

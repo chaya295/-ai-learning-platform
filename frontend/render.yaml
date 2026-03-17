@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: ai-learning-frontend
+    env: node
+    buildCommand: npm install && REACT_APP_API_URL=https://ai-learning-backend-39cv.onrender.com npm run build && npm install -g serve
+    startCommand: serve -s build -l $PORT
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://ai-learning-backend-39cv.onrender.com
