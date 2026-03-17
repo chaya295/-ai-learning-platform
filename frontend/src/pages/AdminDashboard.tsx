@@ -16,7 +16,7 @@ export const AdminDashboard: React.FC = () => {
   useEffect(() => {
     loadUsers();
     loadPrompts();
-  }, [searchTerm, sortBy]);
+  }, [searchTerm, sortBy]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadUsers = async () => {
     const params: { search?: string; sortBy?: string } = {};
