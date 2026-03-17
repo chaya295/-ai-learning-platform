@@ -1,33 +1,50 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Logger, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AiService } from '../ai/ai.service';
 import { CreatePromptDto } from './dto/create-prompt.dto';
 
 @Injectable()
 export class PromptsService {
+  private readonly logger = new Logger(PromptsService.name);
+
   constructor(
     private prisma: PrismaService,
     private aiService: AiService,
   ) {}
 
   async create(createPromptDto: CreatePromptDto) {
-    const category = await this.prisma.category.findUnique({
-      where: { id: createPromptDto.categoryId },
-    });
+    const { categoryId, subCategoryId, prompt, userId } = createPromptDto;
 
-    const subCategory = await this.prisma.subCategory.findUnique({
-      where: { id: createPromptDto.subCategoryId },
-    });
-
-    if (!category || !subCategory) {
-      throw new NotFoundException('Category or SubCategory not found');
+    if (!prompt?.trim()) {
+      throw new BadRequestException('Prompt cannot be empty');
     }
 
-    const response = await this.aiService.generateLesson(
-      category.name,
-      subCategory.name,
-      createPromptDto.prompt,
-    );
+    const [category, subCategory] = await Promise.all([
+      this.prisma.category.findUnique({ where: { id: categoryId } }),
+      this.prisma.subCategory.findUnique({ where: { id: subCategoryId } }),
+    ]);
+
+    if (!category) {
+      throw new NotFoundException(`Category with ID ${categoryId} not found`);
+    }
+
+    if (!subCategory) {
+      throw new NotFoundException(`SubCategory with ID ${subCategoryId} not found`);
+    }
+
+    this.logger.log(`Creating prompt for user ${userId} in ${category.name}/${subCategory.name}`);
+
+    let response: string;
+    try {
+      response = await this.aiService.generateLesson(
+        category.name,
+        subCategory.name,
+        prompt,
+      );
+    } catch (error) {
+      this.logger.error(`AI Service Error: ${error.message}`, error.stack);
+      throw error;
+    }
 
     return this.prisma.prompt.create({
       data: {
@@ -37,7 +54,7 @@ export class PromptsService {
       include: {
         category: true,
         subCategory: true,
-        user: true,
+        user: { select: { id: true, name: true, phone: true } },
       },
     });
   }
@@ -54,15 +71,31 @@ export class PromptsService {
   }
 
   async findByUser(userId: number) {
+    if (!userId || userId <= 0) {
+      throw new BadRequestException('Invalid user ID');
+    }
+
     return this.prisma.prompt.findMany({
       where: { userId },
       include: {
         category: true,
         subCategory: true,
       },
-      orderBy: {
-        createdAt: 'desc',
-      },
+      orderBy: { createdAt: 'desc' },
     });
+  }
+
+  async remove(id: number) {
+    if (!id || id <= 0) {
+      throw new BadRequestException('Invalid prompt ID');
+    }
+
+    const prompt = await this.prisma.prompt.findUnique({ where: { id } });
+    if (!prompt) {
+      throw new NotFoundException(`Prompt with ID ${id} not found`);
+    }
+
+    await this.prisma.prompt.delete({ where: { id } });
+    return { message: 'Prompt deleted successfully' };
   }
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, ValidationPipe, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, ValidationPipe, UseGuards, Delete } from '@nestjs/common';
 import { PromptsService } from './prompts.service';
 import { CreatePromptDto } from './dto/create-prompt.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -25,5 +25,10 @@ export class PromptsController {
   @Get('user/:userId')
   findByUser(@Param('userId') userId: string) {
     return this.promptsService.findByUser(+userId);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.promptsService.remove(+id);
   }
 }
