@@ -34,8 +34,9 @@ Thumbs.db
 *.swo
 *~
 
-# Prisma
-prisma/migrations/
-
 # Docker
 docker-compose.override.yml
+
+# Prisma
+# Keep migrations in git for production deployment
+# prisma/migrations/
