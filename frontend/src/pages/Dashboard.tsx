@@ -48,11 +48,15 @@ export const Dashboard: React.FC = () => {
                 <Text fontSize="xs" color="gray.500">Student</Text>
               </Box>
               <Button size="sm" colorScheme="blue" variant="ghost" onClick={() => navigate('/history')}>
-                היסטוריה
+                History
+              </Button>
+              <Button size="sm" colorScheme="green" onClick={() => navigate('/')}>
+                New Lesson
               </Button>
               {user?.role === 'ADMIN' && (
                 <Button size="sm" colorScheme="purple" onClick={() => navigate('/admin')}>
-                  לוח מחוונים
+
+                  Admin Dashboard
                 </Button>
               )}
               <Button

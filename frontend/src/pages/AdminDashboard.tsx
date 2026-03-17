@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Heading, Table, Thead, Tbody, Tr, Th, Td, Box, Input, Select, HStack, Text, Badge, Tabs, TabList, TabPanels, Tab, TabPanel, VStack, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon } from '@chakra-ui/react';
+import { Container, Heading, Table, Thead, Tbody, Tr, Th, Td, Box, Input, Select, HStack, Text, Badge, Tabs, TabList, TabPanels, Tab, TabPanel, VStack, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Button } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import { usersApi, promptsApi } from '../api/client';
+import { useAuth } from '../contexts/AuthContext';
 import { User, Prompt } from '../types';
 
 export const AdminDashboard: React.FC = () => {
@@ -12,6 +14,9 @@ export const AdminDashboard: React.FC = () => {
   const [promptSearch, setPromptSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
   const [userFilter, setUserFilter] = useState('');
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+  const userName = JSON.parse(localStorage.getItem('user') || '{}').name || '';
 
   useEffect(() => {
     loadUsers();
@@ -58,13 +63,47 @@ export const AdminDashboard: React.FC = () => {
   const uniqueUsers = [...new Set(prompts.map(p => p.user?.name).filter(Boolean))];
 
   return (
-    <Container maxW="container.xl" py={8}>
+    <Box minH="100vh" bg="gray.50">
+      {/* Header */}
+      <Box bg="white" boxShadow="sm" borderBottom="1px" borderColor="gray.200">
+        <Container maxW="container.xl" py={4}>
+          <HStack justify="space-between">
+            <HStack spacing={3}>
+              <Box fontSize="2xl">🎓</Box>
+              <Box>
+                <Heading size="md" color="blue.600">AI Learning Platform</Heading>
+                <Text fontSize="sm" color="gray.600">Learn anything with artificial intelligence</Text>
+              </Box>
+            </HStack>
+            <HStack spacing={4}>
+              <Box textAlign="right">
+                <Text fontSize="sm" fontWeight="600" color="gray.700">Welcome, {userName}</Text>
+                <Text fontSize="xs" color="gray.500">Admin</Text>
+              </Box>
+              <Button size="sm" colorScheme="blue" variant="ghost" onClick={() => navigate('/history')}>
+                History
+              </Button>
+              <Button size="sm" colorScheme="green" onClick={() => navigate('/')}>
+                New Lesson
+              </Button>
+              <Button size="sm" colorScheme="purple" onClick={() => navigate('/admin')}>
+                Admin Dashboard
+              </Button>
+              <Button size="sm" colorScheme="gray" variant="ghost" onClick={logout}>
+                Logout
+              </Button>
+            </HStack>
+          </HStack>
+        </Container>
+      </Box>
+
+      <Container maxW="container.xl" py={8}>
       <Heading mb={6} color="blue.600">Admin Dashboard</Heading>
       
       <Tabs colorScheme="blue">
         <TabList>
-          <Tab>משתמשים</Tab>
-          <Tab>שאלות ({prompts.length})</Tab>
+          <Tab>Users</Tab>
+          <Tab>Questions ({prompts.length})</Tab>
         </TabList>
 
         <TabPanels>
@@ -121,13 +160,13 @@ export const AdminDashboard: React.FC = () => {
           <TabPanel>
             <HStack mb={4} spacing={4} wrap="wrap">
               <Input
-                placeholder="חפש בשאלות ותשובות..."
+                placeholder="Search questions and answers..."
                 value={promptSearch}
                 onChange={(e) => setPromptSearch(e.target.value)}
                 maxW="300px"
               />
               <Select 
-                placeholder="כל הקטגוריות" 
+                placeholder="All categories" 
                 value={categoryFilter} 
                 onChange={(e) => setCategoryFilter(e.target.value)} 
                 maxW="200px"
@@ -137,7 +176,7 @@ export const AdminDashboard: React.FC = () => {
                 ))}
               </Select>
               <Select 
-                placeholder="כל המשתמשים" 
+                placeholder="All users" 
                 value={userFilter} 
                 onChange={(e) => setUserFilter(e.target.value)} 
                 maxW="200px"
@@ -147,7 +186,7 @@ export const AdminDashboard: React.FC = () => {
                 ))}
               </Select>
               <Text fontSize="sm" color="gray.600">
-                מציג: <Badge colorScheme="green">{filteredPrompts.length}</Badge> מתוך {prompts.length}
+                Showing: <Badge colorScheme="green">{filteredPrompts.length}</Badge> of {prompts.length}
               </Text>
             </HStack>
 
@@ -162,7 +201,7 @@ export const AdminDashboard: React.FC = () => {
                           <Badge colorScheme="blue">{prompt.category?.name}</Badge>
                           <Badge colorScheme="green">{prompt.subCategory?.name}</Badge>
                           <Text fontSize="sm" color="gray.500">
-                            {new Date(prompt.createdAt).toLocaleString('he-IL')}
+                            {new Date(prompt.createdAt).toLocaleString('en-US')}
                           </Text>
                         </HStack>
                         <Text mt={2} fontWeight="medium">{prompt.prompt}</Text>
@@ -179,6 +218,7 @@ export const AdminDashboard: React.FC = () => {
           </TabPanel>
         </TabPanels>
       </Tabs>
-    </Container>
+      </Container>
+    </Box>
   );
 };

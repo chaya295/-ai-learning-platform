@@ -257,6 +257,24 @@ heroku config:set REACT_APP_API_URL=https://your-backend.herokuapp.com
 git push heroku main
 ```
 
+## 🔐 Admin Access
+
+By default, all registered users have the `USER` role. To grant admin access:
+
+**Option 1: Via Prisma Studio**
+```bash
+cd backend
+npx prisma studio
+```
+Open `http://localhost:5555`, go to the `User` table, find the user and change `role` from `USER` to `ADMIN`.
+
+**Option 2: Via SQL**
+```sql
+UPDATE "User" SET role = 'ADMIN' WHERE phone = 'your-phone-number';
+```
+
+Once set to ADMIN, the user will see the **Admin Dashboard** button in the header after logging in.
+
 ## 💡 Assumptions
 
 1. Phone numbers are unique identifiers (10 digits)
